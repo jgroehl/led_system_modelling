@@ -14,7 +14,7 @@ from utils.cyberdyne_led_array_system import CyberdyneLEDArraySystem
 #  point to the correct file in the PathManager().
 path_manager = sp.PathManager()
 
-settings = generate_base_settings(path_manager, volume_name="francis2")
+settings = generate_base_settings(path_manager, volume_name="francis3")
 
 # extract information on geometry and spacing for the purposes of volume creation and device definition
 dim_x_mm = settings[Tags.DIM_VOLUME_X_MM]

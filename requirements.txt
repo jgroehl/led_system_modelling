@@ -1,0 +1,4 @@
+git+http://github.com/jgroehl/simpa@develop
+matplotlib
+numpy
+scipy
