@@ -69,7 +69,7 @@ class CyberdyneLEDArraySystem(PhotoacousticDevice):
         TransFocus = 0
         Nx = 744
         dx = grid_size / Nx
-        full_angle = 120
+        full_angle = 80
         n_src = 8 * 36
         height_probe = 0
         height_phantom = 3.785e-2

@@ -11,11 +11,13 @@
 % last update: 26th May 2022
 
 function [time_series_data] = ipasc_linear_array_simulation( ...
-        load_path, computational_model, export_ipasc, ...
+        load_path, frequency_response, detector_size, computational_model, export_ipasc, ...
         infinite_phantom, PML_size)
 
     arguments
         load_path string
+        frequency_response logical
+        detector_size logical
         computational_model int16 = 3
         export_ipasc logical = true
         infinite_phantom logical = false
@@ -55,8 +57,8 @@ function [time_series_data] = ipasc_linear_array_simulation( ...
 
     % set sampling rate to 50Mhz
     dt = 1.0 / double(40000000);
-    % Simulate as many time steps as a wave takes to traverse diagonally through the entire tissue
-    Nt = round((sqrt(Ny*Ny+Nx*Nx+Nz*Nz)*dx / mean(medium.sound_speed, 'all')) / dt);
+    % Simulate as many time steps as present in the Cyberdyne sinogram
+    Nt = 1024;
     kgrid.setTime(Nt, dt);
 
     % =========================================================================
@@ -67,8 +69,14 @@ function [time_series_data] = ipasc_linear_array_simulation( ...
     sensor_array = kWaveArray;
 
     % define rectangular element size, orientation, and array pitch
-    Lx    = 0.2e-3;       % [m]
-    Ly    = 8e-3;         % [m]
+    if detector_size
+        Lx    = 0.2e-3;       % [m]
+        Ly    = 8e-3;         % [m]
+    end
+    if ~detector_size
+        Lx    = 1e-10;       % [m]
+        Ly    = 1e-10;         % [m]
+    end
     theta = [0, 0, 0];    % [deg]
     pitch = 0.315e-3;       % [m]
 
@@ -83,7 +91,10 @@ function [time_series_data] = ipasc_linear_array_simulation( ...
 
     % assign off-grid sensor to source structure for input to kspaceFirstOrder3D
     sensor.mask = sensor_array.getArrayBinaryMask(kgrid);
-    sensor.frequency_response = [7e6, 80];
+
+    if frequency_response
+        sensor.frequency_response = [7e6, 80];
+    end
 
 
     % =========================================================================

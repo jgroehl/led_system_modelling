@@ -3,11 +3,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # CHANGE THIS PATH TO POINT TO THE DESIRED SIMPA OUTPUT
-HDF5_PATH = r"D:\ipasc_output\francis2.hdf5"
+HDF5_PATH = r"C:\tmp_results\optical.hdf5"
 
 
 p0 = sp.load_data_field(HDF5_PATH, sp.Tags.DATA_FIELD_INITIAL_PRESSURE, 800)
-p0 = np.log(p0)
+# p0 = np.log(p0)
 x, y, z = p0.shape
 print(x, y, z)
 spacing = (5/x) * 10

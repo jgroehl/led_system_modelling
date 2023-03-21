@@ -19,6 +19,10 @@ class IpascSimpaKWaveAdapter(AcousticForwardModelBaseAdapter):
 
     """
 
+    def __init__(self, settings, initial_pressure=None):
+        super(IpascSimpaKWaveAdapter, self).__init__(settings)
+        self.initial_pressure = initial_pressure
+
     def forward_model(self, detection_geometry) -> np.ndarray:
 
         # Load Tags.DATA_FIELD data and export it as a .mat file
@@ -32,9 +36,11 @@ class IpascSimpaKWaveAdapter(AcousticForwardModelBaseAdapter):
                                          self.global_settings[sp.Tags.WAVELENGTH])
 
         # Load initial pressure (or initial pressure proxy as defined by sp.tags.DATA_FIELD)
-        initial_pressure = sp.load_data_field(self.global_settings[sp.Tags.SIMPA_OUTPUT_PATH],
-                                              self.component_settings[sp.Tags.DATA_FIELD],
-                                              self.global_settings[sp.Tags.WAVELENGTH])
+        initial_pressure = self.initial_pressure
+        if initial_pressure is None:
+            initial_pressure = sp.load_data_field(self.global_settings[sp.Tags.SIMPA_OUTPUT_PATH],
+                                                  self.component_settings[sp.Tags.DATA_FIELD],
+                                                  self.global_settings[sp.Tags.WAVELENGTH])
 
         # Load the device definition (copied from SIMPA k-Wave adapter)
         detector_positions_mm = detection_geometry.get_detector_element_positions_accounting_for_device_position_mm()
@@ -84,7 +90,9 @@ class IpascSimpaKWaveAdapter(AcousticForwardModelBaseAdapter):
         cmd.append("-r")
         cmd.append("addpath('" + base_script_path + "/');" +
                    "addpath('" + base_script_path + "/../../../PACFISH/pacfish_matlab/');" +
-                   "ipasc_linear_array_simulation" + "('" + mat_file_path + "');exit;")
+                   "ipasc_linear_array_simulation" + "('" + mat_file_path + f"',"
+                   f"{int(self.component_settings['frequency_response'])},"
+                   f"{int(self.component_settings['detector_size'])});exit;")
         cur_dir = os.getcwd()
         self.logger.info(cmd)
         subprocess.run(cmd)

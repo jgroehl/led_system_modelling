@@ -57,6 +57,7 @@ settings.set_volume_creation_settings({
 
 })
 acoustic_settings = settings.get_acoustic_settings()
+
 # For this simulation: Use the created absorption map as the input initial pressure
 acoustic_settings[Tags.DATA_FIELD] = Tags.DATA_FIELD_INITIAL_PRESSURE
 
