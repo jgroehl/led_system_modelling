@@ -46,9 +46,7 @@ label_volume[dx:-dx, int(sizes[1]/2), dz:-dz] = label_mask
 def segmentation_class_mapping():
     ret_dict = dict()
     ret_dict[1] = sp.TISSUE_LIBRARY.blood(oxygenation=0.5)
-    ret_dict[0] = (sp.MolecularCompositionGenerator()
-                   .append(sp.MOLECULE_LIBRARY.water(1.0))
-                   .get_molecular_composition(sp.SegmentationClasses.WATER))
+    ret_dict[0] = sp.TISSUE_LIBRARY.constant(mua=0.1, mus=100, g=0.9)
     return ret_dict
 
 settings.set_volume_creation_settings({
