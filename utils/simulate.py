@@ -37,8 +37,10 @@ def simulate(data_path, data_name,
     sx, _, sz = sizes
     label_volume = np.zeros(sizes)
 
+    # Load the label mask from the ground truth data
     label_mask = np.load(data_path)["gt"].T
 
+    # scale the label mask based on the difference in spacing between the input and output
     input_spacing = 0.078125
     label_mask = np.round(zoom(label_mask, input_spacing/spacing, order=0)).astype(int)
     mx, mz = np.shape(label_mask)
