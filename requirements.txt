@@ -3,3 +3,4 @@ matplotlib
 numpy
 scipy
 torch
+h5py
