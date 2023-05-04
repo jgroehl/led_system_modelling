@@ -89,7 +89,7 @@ class IpascSimpaKWaveAdapter(AcousticForwardModelBaseAdapter):
         cmd.append("-wait")
         cmd.append("-r")
         cmd.append("addpath('" + base_script_path + "/');" +
-                   "addpath('" + base_script_path + "/../../../PACFISH/pacfish_matlab/');" +
+                   "addpath('" + base_script_path + "/../../dependencies/PACFISH/pacfish_matlab/');" +
                    "ipasc_linear_array_simulation" + "('" + mat_file_path + f"',"
                    f"{int(self.component_settings['frequency_response'])},"
                    f"{int(self.component_settings['detector_size'])});exit;")

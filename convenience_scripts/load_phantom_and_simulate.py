@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: 2023 Francis Kalloor Joseph
 # SPDX-FileCopyrightText: 2023 Janek Gröhl
 # SPDX-License-Identifier: MIT
+import os.path
 
 import simpa as sp
 from simpa import Tags
@@ -10,9 +11,11 @@ from utils.ipasc_simpa_kwave_adapter import IpascSimpaKWaveAdapter
 from scipy.ndimage import zoom
 from utils.cyberdyne_led_array_system import CyberdyneLEDArraySystem
 
+PHANTOM_LOCATION = "../phantoms/ground_truth.npz"
+
 # TODO: Please make sure that a valid path_config.env file is located in your home directory, or that you
 #  point to the correct file in the PathManager().
-path_manager = sp.PathManager()
+path_manager = sp.PathManager("../path_config.env")
 
 settings = generate_base_settings(path_manager, volume_name="francis3")
 
@@ -33,7 +36,7 @@ sizes = np.round(np.asarray([dim_x_mm, dim_y_mm, dim_z_mm]) / spacing).astype(in
 sx, _, sz = sizes
 label_volume = np.zeros(sizes)
 
-label_mask = np.load(r"C:\Users\grohl01\Downloads\data\ground_truth.npz")["gt"].T
+label_mask = np.load(os.path.abspath(PHANTOM_LOCATION))["gt"].T
 
 input_spacing = 0.078125
 label_mask = np.round(zoom(label_mask, input_spacing/spacing, order=0)).astype(int)

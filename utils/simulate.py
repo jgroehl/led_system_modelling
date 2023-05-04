@@ -3,8 +3,10 @@
 # SPDX-License-Identifier: MIT
 
 import simpa as sp
-from simpa import Tags
 import numpy as np
+import os.path
+
+from simpa import Tags
 from utils.settings import generate_base_settings
 from utils.ipasc_simpa_kwave_adapter import IpascSimpaKWaveAdapter
 from scipy.ndimage import zoom
@@ -124,4 +126,4 @@ def simulate(data_path, data_name,
                 settings=settings,
                 digital_device_twin=device)
 
-    return path_manager.get_hdf5_file_save_path() + f"/{data_name}_ipasc.hdf5"
+    return os.path.abspath(path_manager.get_hdf5_file_save_path()) + f"/{data_name}_ipasc.hdf5"
