@@ -1,6 +1,9 @@
 # Simulation results
 results/
 
+# Noise data
+resources/
+
 .idea/
 .idea/*
 
