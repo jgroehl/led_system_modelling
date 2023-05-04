@@ -28,24 +28,25 @@ add_noise(path, PATH_TO_NOISE)
 # We only have to run the optical forward model once per phantom digital twin.
 optical_path = simulate(DATA_FILE, "optical", optical_model=True)
 add_noise(optical_path, PATH_TO_NOISE)
+optical_path_simpa = optical_path.replace("_ipasc", "")
 
 path = simulate(DATA_FILE, "optical_attenuation", optical_model=True, model_acoustic_attenuation=True,
-                load_initial_pressure_path=optical_path)
+                load_initial_pressure_path=optical_path_simpa)
 add_noise(path, PATH_TO_NOISE)
 
 path = simulate(DATA_FILE, "optical_size", optical_model=True, model_detector_size=True,
-                load_initial_pressure_path=optical_path)
+                load_initial_pressure_path=optical_path_simpa)
 add_noise(path, PATH_TO_NOISE)
 
 path = simulate(DATA_FILE, "optical_frequencyresponse", optical_model=True, model_frequency_response=True,
-                load_initial_pressure_path=optical_path)
+                load_initial_pressure_path=optical_path_simpa)
 add_noise(path, PATH_TO_NOISE)
 
 path = simulate(DATA_FILE, "optical_attenuation_size", optical_model=True, model_acoustic_attenuation=True,
-                load_initial_pressure_path=optical_path, model_detector_size=True)
+                load_initial_pressure_path=optical_path_simpa, model_detector_size=True)
 add_noise(path, PATH_TO_NOISE)
 
 path = simulate(DATA_FILE, "optical_attenuation_size_frequencyresponse", optical_model=True,
                 model_acoustic_attenuation=True, model_frequency_response=True,
-                load_initial_pressure_path=optical_path, model_detector_size=True)
+                load_initial_pressure_path=optical_path_simpa, model_detector_size=True)
 add_noise(path, PATH_TO_NOISE)
