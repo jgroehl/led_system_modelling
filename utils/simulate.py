@@ -43,12 +43,11 @@ def simulate(data_path, data_name,
     label_mask = np.load(data_path)["gt"].T
 
     # scale the label mask based on the difference in spacing between the input and output
-    input_spacing = 0.078125
+    input_spacing = settings[Tags.SPACING_MM] / 2
     label_mask = np.round(zoom(label_mask, input_spacing/spacing, order=0)).astype(int)
     mx, mz = np.shape(label_mask)
     dx = int((sx - mx) / 2)
     dz = int((sz - mz) / 2)
-    label_volume[dx:-dx, int(sizes[1]/2), dz:-dz] = label_mask
 
     # Define a segmentation mapping to assign optical properties to the background and the structures
     def segmentation_class_mapping():
@@ -84,6 +83,16 @@ def simulate(data_path, data_name,
                         ))
                        .get_molecular_composition(sp.SegmentationClasses.WATER))
         return ret_dict
+    # Add the label mask to the middle slice (at y = y_max / 2) of the volume
+    match (dx == 0, dz == 0):
+        case (True, True):
+            label_volume[:, int(sizes[1]/2), :] = label_mask
+        case (True, False):
+            label_volume[:, int(sizes[1]/2), dz:-dz] = label_mask
+        case (False, True):
+            label_volume[dx:-dx, int(sizes[1]/2), :] = label_mask
+        case (False, False):
+            label_volume[dx:-dx, int(sizes[1]/2), dz:-dz] = label_mask
 
     settings.set_volume_creation_settings({
         Tags.INPUT_SEGMENTATION_VOLUME: label_volume,
@@ -120,7 +129,7 @@ def simulate(data_path, data_name,
     device = CyberdyneLEDArraySystem(device_position_mm=np.array([dim_x_mm/2,
                                                                  dim_y_mm/2,
                                                                  0]),
-                                     field_of_view_extent_mm=np.asarray([-20, 20, 0, 0, 0, 40]))
+                                     field_of_view_extent_mm=np.asarray([-25, 25, 0, 0, 0, 40]))
 
     sp.simulate(simulation_pipeline=pipeline,
                 settings=settings,
