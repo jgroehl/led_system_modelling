@@ -49,40 +49,6 @@ def simulate(data_path, data_name,
     dx = int((sx - mx) / 2)
     dz = int((sz - mz) / 2)
 
-    # Define a segmentation mapping to assign optical properties to the background and the structures
-    def segmentation_class_mapping():
-        if model_acoustic_attenuation:
-            alpha = sp.StandardProperties.ALPHA_COEFF_WATER
-        else:
-            alpha = 0.0
-        ret_dict = dict()
-        ret_dict[1] = (sp.MolecularCompositionGenerator()
-                       .append(sp.Molecule(name="structure",
-                                           absorption_spectrum=sp.AbsorptionSpectrumLibrary.CONSTANT_ABSORBER_ARBITRARY(1.0),
-                                           volume_fraction=1.0,
-                                           scattering_spectrum=sp.ScatteringSpectrumLibrary.CONSTANT_SCATTERING_ARBITRARY(
-                                                sp.StandardProperties.WATER_MUS),
-                                           anisotropy_spectrum=sp.AnisotropySpectrumLibrary.CONSTANT_ANISOTROPY_ARBITRARY(
-                                                sp.StandardProperties.WATER_G),
-                                           density=sp.StandardProperties.DENSITY_WATER,
-                                           speed_of_sound=sp.StandardProperties.SPEED_OF_SOUND_WATER,
-                                           alpha_coefficient=alpha
-                            ))
-                       .get_molecular_composition(sp.SegmentationClasses.BLOOD))
-        ret_dict[0] = (sp.MolecularCompositionGenerator()
-                       .append(sp.Molecule(name="water",
-                                           absorption_spectrum=sp.AbsorptionSpectrumLibrary().CONSTANT_ABSORBER_ARBITRARY(0.0),
-                                           volume_fraction=1.0,
-                                           scattering_spectrum=sp.ScatteringSpectrumLibrary.CONSTANT_SCATTERING_ARBITRARY(
-                                                sp.StandardProperties.WATER_MUS),
-                                           anisotropy_spectrum=sp.AnisotropySpectrumLibrary.CONSTANT_ANISOTROPY_ARBITRARY(
-                                                sp.StandardProperties.WATER_G),
-                                           density=sp.StandardProperties.DENSITY_WATER,
-                                           speed_of_sound=sp.StandardProperties.SPEED_OF_SOUND_WATER,
-                                           alpha_coefficient=alpha
-                        ))
-                       .get_molecular_composition(sp.SegmentationClasses.WATER))
-        return ret_dict
     # Add the label mask to the middle slice (at y = y_max / 2) of the volume
     match (dx == 0, dz == 0):
         case (True, True):
@@ -96,9 +62,9 @@ def simulate(data_path, data_name,
 
     settings.set_volume_creation_settings({
         Tags.INPUT_SEGMENTATION_VOLUME: label_volume,
-        Tags.SEGMENTATION_CLASS_MAPPING: segmentation_class_mapping(),
-
+        Tags.SEGMENTATION_CLASS_MAPPING: segmentation_class_mapping(model_acoustic_attenuation),
     })
+
     acoustic_settings = settings.get_acoustic_settings()
     acoustic_settings["frequency_response"] = model_frequency_response
     acoustic_settings["detector_size"] = model_detector_size
@@ -135,4 +101,40 @@ def simulate(data_path, data_name,
                 settings=settings,
                 digital_device_twin=device)
 
-    return os.path.abspath(path_manager.get_hdf5_file_save_path()) + f"/{data_name}_ipasc.hdf5"
+    return os.path.join(os.path.abspath(path_manager.get_hdf5_file_save_path()), f"{data_name}_ipasc.hdf5")
+
+
+# Define a segmentation mapping to assign optical properties to the background and the structures
+def segmentation_class_mapping(model_acoustic_attenuation):
+    if model_acoustic_attenuation:
+        alpha = sp.StandardProperties.ALPHA_COEFF_WATER
+    else:
+        alpha = 0.0
+    ret_dict = dict()
+    ret_dict[1] = (sp.MolecularCompositionGenerator()
+                   .append(sp.Molecule(name="structure",
+                                       absorption_spectrum=sp.AbsorptionSpectrumLibrary.CONSTANT_ABSORBER_ARBITRARY(1.0),
+                                       volume_fraction=1.0,
+                                       scattering_spectrum=sp.ScatteringSpectrumLibrary.CONSTANT_SCATTERING_ARBITRARY(
+                                           sp.StandardProperties.WATER_MUS),
+                                       anisotropy_spectrum=sp.AnisotropySpectrumLibrary.CONSTANT_ANISOTROPY_ARBITRARY(
+                                           sp.StandardProperties.WATER_G),
+                                       density=sp.StandardProperties.DENSITY_WATER,
+                                       speed_of_sound=sp.StandardProperties.SPEED_OF_SOUND_WATER,
+                                       alpha_coefficient=alpha
+                                       ))
+                   .get_molecular_composition(sp.SegmentationClasses.BLOOD))
+    ret_dict[0] = (sp.MolecularCompositionGenerator()
+                   .append(sp.Molecule(name="water",
+                                       absorption_spectrum=sp.AbsorptionSpectrumLibrary().CONSTANT_ABSORBER_ARBITRARY(0.0),
+                                       volume_fraction=1.0,
+                                       scattering_spectrum=sp.ScatteringSpectrumLibrary.CONSTANT_SCATTERING_ARBITRARY(
+                                           sp.StandardProperties.WATER_MUS),
+                                       anisotropy_spectrum=sp.AnisotropySpectrumLibrary.CONSTANT_ANISOTROPY_ARBITRARY(
+                                           sp.StandardProperties.WATER_G),
+                                       density=sp.StandardProperties.DENSITY_WATER,
+                                       speed_of_sound=sp.StandardProperties.SPEED_OF_SOUND_WATER,
+                                       alpha_coefficient=alpha
+                                       ))
+                   .get_molecular_composition(sp.SegmentationClasses.WATER))
+    return ret_dict
