@@ -3,7 +3,7 @@ import pacfish as pf
 import simpa as sp
 import os.path
 
-base_dir = os.path.join(os.path.curdir, "../")
+base_dir = os.path.join(os.path.curdir, "../../")
 path_manager = sp.PathManager("../path_config.env")
 BASE_PATH = os.path.abspath(os.path.join(base_dir, path_manager.get_hdf5_file_save_path()))
 

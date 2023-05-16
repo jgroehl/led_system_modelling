@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os.path
 
-base_dir = os.path.join(os.path.curdir, "../")
+base_dir = os.path.join(os.path.curdir, "../../")
 path_manager = sp.PathManager("../path_config.env")
 
 HDF5_PATH = os.path.join(base_dir, path_manager.get_hdf5_file_save_path(), "optical.hdf5")

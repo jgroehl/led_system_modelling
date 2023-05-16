@@ -24,7 +24,7 @@ def generate_base_settings(path_manager: sp.PathManager,
     """
 
     settings = Settings()
-    settings[Tags.SIMULATION_PATH] = os.path.abspath(path_manager.get_hdf5_file_save_path())
+    settings[Tags.SIMULATION_PATH] = os.path.abspath(os.path.join("../", path_manager.get_hdf5_file_save_path()))
     settings[Tags.VOLUME_NAME] = volume_name
     settings[Tags.DIM_VOLUME_X_MM] = 50
     settings[Tags.DIM_VOLUME_Y_MM] = 25

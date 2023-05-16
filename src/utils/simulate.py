@@ -101,7 +101,7 @@ def simulate(data_path, data_name,
                 settings=settings,
                 digital_device_twin=device)
 
-    return os.path.join(os.path.abspath(path_manager.get_hdf5_file_save_path()), f"{data_name}_ipasc.hdf5")
+    return os.path.abspath(os.path.join("../", path_manager.get_hdf5_file_save_path(), f"{data_name}_ipasc.hdf5"))
 
 
 # Define a segmentation mapping to assign optical properties to the background and the structures
