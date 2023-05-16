@@ -1,8 +1,9 @@
 # Simulation results
 results/
 
-# Noise data
-resources/
+# Data (do include phantoms)
+resources/*
+!resources/phantoms/
 
 .idea/
 .idea/*

@@ -3,9 +3,10 @@ import os.path
 from utils.simulate import simulate
 from utils.noise_models import add_noise
 
-# Define relative paths to data and noise files
-DATA_FILE = "phantoms/veins.npz"
-NOISE_FILE = "resources/NoiseMeasurement.mat"
+# Define paths to data and noise files
+RESOURCES_DIR = "../resources/"
+DATA_FILE = "veins.npz"                 # located in RESOURCES_DIR/phantoms/
+NOISE_FILE = "NoiseMeasurement.mat"     # located in RESOURCES_DIR/
 
 
 def run_simulations(data_file: str, noise_file: str) -> None:
@@ -85,7 +86,9 @@ def run_simulations(data_file: str, noise_file: str) -> None:
 
 if __name__ == "__main__":
     # Construct absolute paths from the relative paths defined above
-    abs_data_file = os.path.abspath(DATA_FILE)
-    abs_noise_file = os.path.abspath(NOISE_FILE)
+    resources_dir = os.path.abspath(RESOURCES_DIR)
 
-    run_simulations(abs_data_file, abs_noise_file)
+    data_file = os.path.join(resources_dir, "phantoms", DATA_FILE)
+    noise_file = os.path.join(resources_dir, NOISE_FILE)
+
+    run_simulations(data_file, noise_file)

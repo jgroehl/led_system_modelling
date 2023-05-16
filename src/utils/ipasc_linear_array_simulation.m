@@ -40,7 +40,8 @@ function [time_series_data] = ipasc_linear_array_simulation( ...
 
     % Check the initial pressure is the right size
     if ~isequal([Nx,Ny,Nz], [1024, 512, 1024])
-        warning(['For these simulations, the dimensions should be [1024, 512, 1024]'])
+        warning(['For these simulations, the dimensions should be [1024, 512, 1024]']);
+        warning([sprintf('The given dimensions are: %d %d %d', Nx, Ny, Nz)]);
     end
 
     % define the domain size in the x-direction
