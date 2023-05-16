@@ -1,7 +1,7 @@
 from pandas import read_csv
 import numpy as np
 
-CSV_LOCATION = "../resources/disc.csv"
+CSV_LOCATION = "../../resources/pressure_distributions/disc.csv"
 PHANTOM_NAME = "disc"
 
 
@@ -14,7 +14,7 @@ def create_phantom(name: str, csv_path: str) -> None:
     """
 
     df = read_csv(csv_path)
-    path = "../phantoms/" + name + ".npz"
+    path = "../../resources/phantoms/" + name + ".npz"
     np.savez(path, gt=df)
 
 
