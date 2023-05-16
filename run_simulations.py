@@ -4,7 +4,7 @@ from utils.simulate import simulate
 from utils.noise_models import add_noise
 
 # Define relative paths to data and noise files
-DATA_FILE = "phantoms/ground_truth.npz"
+DATA_FILE = "phantoms/veins.npz"
 NOISE_FILE = "resources/NoiseMeasurement.mat"
 
 # Construct absolute paths from the relative paths defined above
