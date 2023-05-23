@@ -88,7 +88,7 @@ if __name__ == "__main__":
     # Construct absolute paths from the relative paths defined above
     resources_dir = os.path.abspath(RESOURCES_DIR)
 
-    data_file = os.path.join(resources_dir, "phantoms", DATA_FILE)
-    noise_file = os.path.join(resources_dir, NOISE_FILE)
+    data_path = os.path.join(resources_dir, "phantoms", DATA_FILE)
+    noise_path = os.path.join(resources_dir, NOISE_FILE)
 
-    run_simulations(data_file, noise_file)
+    run_simulations(data_path, noise_path)
