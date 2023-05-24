@@ -16,15 +16,15 @@ spacing = (5/x) * 10
 
 plt.figure()
 plt.imshow(p0[:, int(y/2), :].T, extent=[0, x*spacing, z*spacing, 0])
-plt.xlabel("x-position [a.u.]")
-plt.ylabel("z-position [a.u.]")
+plt.xlabel("x-position [mm]")
+plt.ylabel("z-position [mm]")
 plt.colorbar(label="Absorption [a.u.]")
 plt.title("Absorption map")
 
 plt.figure()
 plt.imshow(p0[int(x/2), :, :].T, extent=[0, y*spacing, z*spacing, 0])
-plt.xlabel("y-position [a.u.]")
-plt.ylabel("z-position [a.u.]")
+plt.xlabel("y-position [mm]")
+plt.ylabel("z-position [mm]")
 plt.colorbar(label="Absorption [a.u.]")
 plt.title("Absorption map (side view)")
 
