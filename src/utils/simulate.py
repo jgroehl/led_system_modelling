@@ -19,6 +19,17 @@ def simulate(data_path, data_name,
              model_acoustic_attenuation=False,
              model_frequency_response=False,
              load_initial_pressure_path=None):
+    """
+    Run a photoacoustic simulation with given parameters.
+
+    :param str data_path: The absolute path to the phantom file (.npz)
+    :param str data_name: The name of the simulation, will be used to name result file
+    :param bool optical_model: Whether to run an optical forward simulation before running an acoustic simulation
+    :param bool model_detector_size: Whether to model using the defined detector size (otherwise using default)
+    :param bool model_acoustic_attenuation: Whether to model the acoustic attenuation
+    :param bool model_frequency_response: Whether to model the frequency response of the detectors
+    :param bool load_initial_pressure_path: Path to the result of the optical simulation (if optical_model is set to True)
+    """
 
     path_manager = sp.PathManager()
     settings = generate_base_settings(path_manager, volume_name=data_name)
