@@ -29,6 +29,9 @@ def simulate(data_path, data_name,
     :param bool model_acoustic_attenuation: Whether to model the acoustic attenuation
     :param bool model_frequency_response: Whether to model the frequency response of the detectors
     :param bool load_initial_pressure_path: Path to the result of the optical simulation (if optical_model is set to True)
+
+    :return: Absolute path to the simulation result
+    :rtype: str
     """
 
     path_manager = sp.PathManager()
