@@ -117,8 +117,16 @@ def simulate(data_path, data_name,
     return os.path.abspath(os.path.join("../", path_manager.get_hdf5_file_save_path(), f"{data_name}_ipasc.hdf5"))
 
 
-# Define a segmentation mapping to assign optical properties to the background and the structures
 def segmentation_class_mapping(model_acoustic_attenuation):
+    """
+    Define a segmemtation class mapping to assign optical properties to the background and structure materials.
+
+    :param bool model_acoustic_attenuation: Whether to model the acoustic attenuation
+
+    :return: A dictionary with the materials of the sample and its properties
+    :rtype: dict
+    """
+
     if model_acoustic_attenuation:
         alpha = sp.StandardProperties.ALPHA_COEFF_WATER
     else:
