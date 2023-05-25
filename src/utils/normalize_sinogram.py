@@ -1,5 +1,5 @@
 import pacfish as pf
-import simpa as sp
+import matplotlib.pyplot as plt
 import numpy as np
 import os.path
 
@@ -10,6 +10,7 @@ STDDEV = 10
 # Define path to sinogram to normalize when this file is run directly
 # by the Python interpreter
 INSPECT_PATH = "/tmp/results/sinogram.hdf5"
+
 
 def normalize_sinogram(data_path):
     data = pf.load_data(data_path).binary_time_series_data
