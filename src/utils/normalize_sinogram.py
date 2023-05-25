@@ -4,8 +4,8 @@ import numpy as np
 import os.path
 
 # Define resulting mean and standard deviation
-MEAN = 50
-STDDEV = 10
+MEAN = 10
+STDDEV = 1
 
 # Define path to sinogram to normalize when this file is run directly
 # by the Python interpreter
