@@ -32,5 +32,8 @@ if __name__ == "__main__":
     # Inspect result
     plt.figure()
     plt.imshow(normalized, aspect=8)
-    plt.colorbar()
+    plt.title("Normalized sinogram")
+    plt.xlabel("Time step")
+    plt.ylabel("Detector element")
+    plt.colorbar(label="Pressure [a.u.]")
     plt.show()
