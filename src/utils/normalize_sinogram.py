@@ -5,13 +5,11 @@ from scipy.io import loadmat
 import os.path
 
 # Define resulting mean and standard deviation
-MEAN = 10
+MEAN = 0
 STDDEV = 1
 
 # Define path to sinogram to normalize when this file is run directly
 # by the Python interpreter
-
-# simulation
 INSPECT_PATH = "../../results/optical_attenuation_size_ipasc.hdf5"
 
 
