@@ -43,6 +43,8 @@ if __name__ == "__main__":
         "acoustic attenuation + detector size + frequency response": "attenuation_size_frequencyresponse",
     }
 
+    noise_str = "_noise" if NOISE else ""
+
     for optical in [False, True]:
         optical_str = "optical_" if optical else ""
         for (title, filename) in simulations.items():
@@ -51,7 +53,7 @@ if __name__ == "__main__":
             else:
                 title = "Acoustic:\n" + title
             save_dir = os.path.abspath(os.path.join(base_dir, path_manager.get_hdf5_file_save_path()))
-            full_filename = optical_str + filename + "_ipasc.hdf5"
+            full_filename = optical_str + filename + noise_str + "_ipasc.hdf5"
             path = os.path.join(save_dir, full_filename)
 
             show_sinogram(title, path)
