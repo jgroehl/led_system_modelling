@@ -53,7 +53,7 @@ def run_simulations(data_file: str, noise_file: str) -> None:
     add_noise(path, noise_file)
 
     # Run optical forward model
-    optical_path = simulate(data_file, "optical", optical_model=True)
+    optical_path = simulate(data_file, "optical_baseline", optical_model=True)
     add_noise(optical_path, noise_file)
     optical_path_simpa = optical_path.replace("_ipasc", "")
 
