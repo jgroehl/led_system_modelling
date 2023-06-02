@@ -9,7 +9,12 @@ def calculate_mse(result: np.ndarray, expectation: np.ndarray) -> float:
 
 
 if __name__ == "__main__":
-    import simpa as sp
-    import os.path
+    import pacfish as pf
+    from scipy.io import loadmat
 
-    calculate_mse(SIMULATION_PATH, EXPERIMENTAL_PATH)
+    simulation = pf.load_data(SIMULATION_PATH).binary_time_series_data
+    experiment_raw = loadmat(EXPERIMENTAL_PATH)
+    experiment = experiment_raw["sinogram"].T
+
+    mse = calculate_mse(simulation, experiment)
+    print("Mean squared error: ", mse)

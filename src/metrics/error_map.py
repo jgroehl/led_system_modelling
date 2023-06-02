@@ -17,11 +17,17 @@ def error_map(result: np.ndarray, expectation: np.ndarray, plot=False) -> np.nda
         plt.ylabel("Detector index [ ]")
         plt.colorbar(label="Pressure error [a.u.]")
 
+        plt.show()
+
     return error
 
 
 if __name__ == "__main__":
-    import simpa as sp
-    import os.path
+    import pacfish as pf
+    from scipy.io import loadmat
 
-    error_map(SIMULATION_PATH, EXPERIMENTAL_PATH)
+    simulation = pf.load_data(SIMULATION_PATH).binary_time_series_data
+    experiment_raw = loadmat(EXPERIMENTAL_PATH)
+    experiment = experiment_raw["sinogram"].T
+
+    error_map(simulation, experiment, plot=True)
