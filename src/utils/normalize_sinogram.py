@@ -1,8 +1,7 @@
-import pacfish as pf
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.io import loadmat
 import os.path
+from file_loading import *
 
 # Define resulting mean and standard deviation
 MEAN = 0
@@ -27,10 +26,9 @@ def normalize_sinogram(data_path, experimental=False, mean=MEAN, stddev=STDDEV):
     """
 
     if experimental:
-        data_raw = loadmat(data_path)
-        data = data_raw["sinogram"].T
+        data = load_experimental_result(data_path)
     else:
-        data = pf.load_data(data_path).binary_time_series_data
+        data = load_simulation_result(data_path)
 
     # Scale data to right standard deviation
     old_stddev = np.std(data)
