@@ -11,6 +11,7 @@ from utils.settings import generate_base_settings
 from utils.ipasc_simpa_kwave_adapter import IpascSimpaKWaveAdapter
 from scipy.ndimage import zoom
 from utils.cyberdyne_led_array_system import CyberdyneLEDArraySystem
+from utils.normalize_sinogram import normalize_sinogram
 
 
 def simulate(data_path, data_name,
@@ -114,7 +115,14 @@ def simulate(data_path, data_name,
                 settings=settings,
                 digital_device_twin=device)
 
-    return os.path.abspath(os.path.join("../", path_manager.get_hdf5_file_save_path(), f"{data_name}_ipasc.hdf5"))
+    data_path = os.path.abspath(os.path.join("../", path_manager.get_hdf5_file_save_path(), f"{data_name}_ipasc.hdf5"))
+
+    # Run normalization
+    normalized_sinogram = normalize_sinogram(data_path)
+    save_path = os.path.abspath(os.path.join("../", path_manager.get_hdf5_file_save_path(), f"{data_name}_normalized.npy"))
+    np.save(save_path, normalized_sinogram)
+
+    return data_path
 
 
 def segmentation_class_mapping(model_acoustic_attenuation):

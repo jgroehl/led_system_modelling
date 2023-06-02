@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
-import numpy as np
 import os.path
-from file_loading import *
+from src.utils.file_loading import *
 
 # Define resulting mean and standard deviation
 MEAN = 0
