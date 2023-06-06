@@ -1,7 +1,8 @@
 import numpy as np
 
-SIMULATION_PATH = "../../results/optical_baseline_noise_ipasc.hdf5"
 EXPERIMENTAL_PATH = "/mnt/bmpi/Data/Mirre van der Wal/Data/2023-05-30 experimental reconstruction/experimental_sinogram.mat"
+
+NOISE = True
 
 
 def calculate_mse(result: np.ndarray, expectation: np.ndarray) -> float:
@@ -9,12 +10,35 @@ def calculate_mse(result: np.ndarray, expectation: np.ndarray) -> float:
 
 
 if __name__ == "__main__":
-    import pacfish as pf
-    from scipy.io import loadmat
+    import simpa as sp
+    import os.path
 
-    simulation = pf.load_data(SIMULATION_PATH).binary_time_series_data
-    experiment_raw = loadmat(EXPERIMENTAL_PATH)
-    experiment = experiment_raw["sinogram"].T
+    path_manager = sp.PathManager("../path_config.env")
+    base_dir = "../../"
 
-    mse = calculate_mse(simulation, experiment)
-    print("Mean squared error: ", mse)
+    simulations = {
+        "baseline": "baseline",
+        "acoustic attenuation": "attenuation",
+        "detector size": "size",
+        "frequency response": "frequencyresponse",
+        "acoustic attenuation + detector size": "attenuation_size",
+        "acoustic attenuation + detector size + frequency response": "attenuation_size_frequencyresponse",
+    }
+
+    noise_str = "_noise" if NOISE else ""
+
+    experiment = np.load(EXPERIMENTAL_PATH)
+
+    save_dir = os.path.abspath(os.path.join(base_dir, path_manager.get_hdf5_file_save_path()))
+
+    for optical in [False, True]:
+        for (title, filename) in simulations.items():
+            optical_str = "optical_" if optical else ""
+            full_filename = optical_str + filename + noise_str + "_normalized.npy"
+            path = os.path.join(save_dir, full_filename)
+            simulation = np.load(path)
+
+            title = ("Optical + " if optical else "") + "Acoustic: " + title
+            mse = calculate_mse(simulation, experiment)
+
+            print(f"Mean squared error ({title}): ", mse)
