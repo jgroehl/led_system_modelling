@@ -39,4 +39,5 @@ if __name__ == "__main__":
     path_manager = sp.PathManager("../path_config.env")
 
     data_path = os.path.join(base_dir, path_manager.get_hdf5_file_save_path(), "optical.hdf5")
+    show_absorption(data_path, wavelength=850)
 

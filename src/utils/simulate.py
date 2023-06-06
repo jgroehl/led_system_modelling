@@ -37,7 +37,7 @@ def simulate(data_path, data_name,
 
     # Create SIMPA path manager and settings instance
     path_manager = sp.PathManager()
-    settings = generate_base_settings(path_manager, volume_name=data_name)
+    settings = generate_base_settings(path_manager, volume_name=data_name, wavelength=850)
 
     # Extract information on geometry and spacing of the phantom
     dim_x_mm = settings[Tags.DIM_VOLUME_X_MM]
@@ -86,7 +86,7 @@ def simulate(data_path, data_name,
         # If the simulation is run with an optical model, and an initial pressure distribution is given,
         # use this pressure distribution
         if load_initial_pressure_path is not None:
-            initial_pressure = sp.load_data_field(load_initial_pressure_path, sp.Tags.DATA_FIELD_INITIAL_PRESSURE, 800)
+            initial_pressure = sp.load_data_field(load_initial_pressure_path, sp.Tags.DATA_FIELD_INITIAL_PRESSURE, 850)
             pipeline = [
                 sp.SegmentationBasedVolumeCreationAdapter(settings),
                 IpascSimpaKWaveAdapter(settings, initial_pressure=initial_pressure)

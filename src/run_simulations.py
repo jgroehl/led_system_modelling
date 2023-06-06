@@ -5,7 +5,7 @@ from utils.noise_models import add_noise
 
 # Define paths to data and noise files
 RESOURCES_DIR = "../resources/"
-DATA_FILE = "veins.npz"                 # located in RESOURCES_DIR/phantoms/
+DATA_FILE = "veins-coregistered.npz"    # located in RESOURCES_DIR/phantoms/
 NOISE_FILE = "NoiseMeasurement.mat"     # located in RESOURCES_DIR/
 
 
