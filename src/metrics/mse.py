@@ -1,6 +1,6 @@
 import numpy as np
 
-EXPERIMENTAL_PATH = "/mnt/bmpi/Data/Mirre van der Wal/Data/2023-05-30 experimental reconstruction/experimental_sinogram.mat"
+EXPERIMENTAL_PATH = "/mnt/bmpi/Data/Mirre van der Wal/Data/2023-06-02 coregistered and normalized results/experimental.npy"
 
 NOISE = True
 
