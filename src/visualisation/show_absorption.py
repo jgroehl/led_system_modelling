@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os.path
 
-def show_absorption(data_path: str):
+def show_absorption(data_path: str, wavelength=800):
     """
     Show the absorption map of a simulation.
 
@@ -11,7 +11,7 @@ def show_absorption(data_path: str):
     """
 
     # Load data
-    p0 = sp.load_data_field(HDF5_PATH, sp.Tags.DATA_FIELD_INITIAL_PRESSURE, 800)
+    p0 = sp.load_data_field(data_path, sp.Tags.DATA_FIELD_INITIAL_PRESSURE, wavelength)
     x, y, z = p0.shape
     spacing = 50 / x # assuming a 50 mm sample size in x-direction
 
