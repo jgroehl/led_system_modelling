@@ -5,11 +5,12 @@ import numpy as np
 PHANTOM = "veins"
 
 label_mask = np.load("../../resources/phantoms/" + PHANTOM + ".npz")["gt"]
+
 plt.figure()
-plt.imshow(label_mask, extent=[0, 50, 50, 0])
+plt.imshow(label_mask, extent=[0, 50, 50, 0], cmap="coolwarm")
 plt.title("Ground truth phantom")
 plt.xlabel("x-position [mm]")
 plt.ylabel("z-position [mm]")
-plt.colorbar(label="Pressure [a.u.]")
+plt.colorbar(label=r"(Normalized) optical absorption [mm$^{-1}$]")
 
 plt.show()
