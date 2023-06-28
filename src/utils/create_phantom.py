@@ -13,7 +13,9 @@ def create_phantom(name: str, csv_path: str) -> None:
     :param str csv_path: The path to the csv file with the pressure distribution of the phantom
     """
 
-    df = read_csv(csv_path)
+    df = read_csv(csv_path, header=None)
+    df /= np.max(df)
+
     path = "../../resources/phantoms/" + name + ".npz"
     np.savez(path, gt=df)
 
