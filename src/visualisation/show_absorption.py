@@ -17,10 +17,10 @@ def show_absorption(data_path: str, wavelength=800):
 
     # Show absorption at y = y_max / 2 (sample plane)
     plt.figure()
-    plt.imshow(p0[:, int(y/2), :].T, extent=[0, x*spacing, z*spacing, 0])
+    plt.imshow(p0[:, int(y/2), :].T, extent=[0, x*spacing, z*spacing, 0], cmap="coolwarm")
     plt.xlabel("x-position [mm]")
     plt.ylabel("z-position [mm]")
-    plt.colorbar(label="Absorption [a.u.]")
+    plt.colorbar(label="Absorbed energy [a.u.]")
     plt.title("Absorption map")
 
     # Show absorption at x = x_max / 2 (side view of sample)
@@ -28,7 +28,7 @@ def show_absorption(data_path: str, wavelength=800):
     plt.imshow(p0[int(x/2), :, :].T, extent=[0, y*spacing, z*spacing, 0])
     plt.xlabel("y-position [mm]")
     plt.ylabel("z-position [mm]")
-    plt.colorbar(label="Absorption [a.u.]")
+    plt.colorbar(label="Absorbed energy [a.u.]")
     plt.title("Absorption map (side view)")
 
     plt.show()
