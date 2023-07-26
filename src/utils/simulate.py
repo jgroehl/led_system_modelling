@@ -19,7 +19,8 @@ def simulate(data_path, data_name,
              model_detector_size=False,
              model_acoustic_attenuation=False,
              model_frequency_response=False,
-             load_initial_pressure_path=None):
+             load_initial_pressure_path=None,
+             three_dimensional=False):
     """
     Run a photoacoustic simulation with given parameters.
 
@@ -30,6 +31,7 @@ def simulate(data_path, data_name,
     :param bool model_acoustic_attenuation: Whether to model the acoustic attenuation
     :param bool model_frequency_response: Whether to model the frequency response of the detectors
     :param str load_initial_pressure_path: Path to the result of the optical simulation (if optical_model is set to True)
+    :param bool three_dimensional: Whether to expand the phantom into 3D (place phantom mask at all y-values)
 
     :return: Absolute path to the simulation result
     :rtype: str
@@ -46,29 +48,42 @@ def simulate(data_path, data_name,
     spacing = settings[Tags.SPACING_MM]
 
     sizes = np.round(np.asarray([dim_x_mm, dim_y_mm, dim_z_mm]) / spacing).astype(int)
-    sx, _, sz = sizes
+    sx, sy, sz = sizes
     label_volume = np.zeros(sizes)
 
     # Load the label mask from the ground truth data
     label_mask = np.load(data_path)["gt"].T
 
     # Scale the label mask to fit the volume dimensions
-    input_spacing = settings[Tags.SPACING_MM] / 2
+    input_spacing = settings[Tags.SPACING_MM]
     label_mask = np.round(zoom(label_mask, input_spacing/spacing, order=0)).astype(int)
     mx, mz = np.shape(label_mask)
     dx = int((sx - mx) / 2)
     dz = int((sz - mz) / 2)
 
-    # Add the label mask to the middle slice (at y = y_max / 2) of the volume
-    match (dx == 0, dz == 0):
-        case (True, True):
-            label_volume[:, int(sizes[1]/2), :] = label_mask
-        case (True, False):
-            label_volume[:, int(sizes[1]/2), dz:-dz] = label_mask
-        case (False, True):
-            label_volume[dx:-dx, int(sizes[1]/2), :] = label_mask
-        case (False, False):
-            label_volume[dx:-dx, int(sizes[1]/2), dz:-dz] = label_mask
+    if three_dimensional:
+        # Add the label mask to all slices of the volume
+        for y_val in range(sy):
+            match (dx == 0, dz == 0):
+                case (True, True):
+                    label_volume[:, y_val, :] = label_mask
+                case (True, False):
+                    label_volume[:, y_val, dz:-dz] = label_mask
+                case (False, True):
+                    label_volume[dx:-dx, y_val, :] = label_mask
+                case (False, False):
+                    label_volume[dx:-dx, y_val, dz:-dz] = label_mask
+    else:
+        # Add the label mask to the middle slice (at y = y_max / 2) of the volume
+        match (dx == 0, dz == 0):
+            case (True, True):
+                label_volume[:, int(sizes[1]/2), :] = label_mask
+            case (True, False):
+                label_volume[:, int(sizes[1]/2), dz:-dz] = label_mask
+            case (False, True):
+                label_volume[dx:-dx, int(sizes[1]/2), :] = label_mask
+            case (False, False):
+                label_volume[dx:-dx, int(sizes[1]/2), dz:-dz] = label_mask
 
     # Create volume (using SIMPA volume creation module, with segmentation based volume creator)
     settings.set_volume_creation_settings({

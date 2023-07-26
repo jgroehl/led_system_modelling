@@ -26,62 +26,74 @@ def run_simulations(data_file: str, noise_file: str) -> None:
     :param str noise_file: The absolute path to the noise measurement (.mat file)
     """
 
-    # Acoustic simulation
-    path = simulate(data_file, "baseline")
-    add_noise(path, noise_file)
-
-    # Acoustic simulation + acoustic attenuation
-    path = simulate(data_file, "attenuation", model_acoustic_attenuation=True)
-    add_noise(path, noise_file)
-
-    # Acoustic simulation + detector size
-    path = simulate(data_file, "size", model_detector_size=True)
-    add_noise(path, noise_file)
+    # # Acoustic simulation
+    # # path = simulate(data_file, "baseline", three_dimensional=True)
+    # path = simulate(data_file, "baseline")
+    # add_noise(path, noise_file)
+    #
+    # # Acoustic simulation + acoustic attenuation
+    # # path = simulate(data_file, "attenuation", model_acoustic_attenuation=True, three_dimensional=True)
+    # path = simulate(data_file, "attenuation", model_acoustic_attenuation=True)
+    # add_noise(path, noise_file)
+    #
+    # # Acoustic simulation + detector size
+    # # path = simulate(data_file, "size", model_detector_size=True, three_dimensional=True)
+    # path = simulate(data_file, "size", model_detector_size=True)
+    # add_noise(path, noise_file)
 
     # Acoustic simulation + frequency response
-    path = simulate(data_file, "frequencyresponse", model_frequency_response=True)
-    add_noise(path, noise_file)
+    path = simulate(data_file, "frequencyresponse", model_frequency_response=True, three_dimensional=True)
+    # path = simulate(data_file, "frequencyresponse", model_frequency_response=True)
+    add_noise(path, noise_file, model_frequency_response=True)
 
-    # Acoustic simulation + acoustic attenuation + detector size
-    path = simulate(data_file, "attenuation_size", model_acoustic_attenuation=True,
-                    model_detector_size=True)
-    add_noise(path, noise_file)
+    # # Acoustic simulation + acoustic attenuation + detector size
+    # path = simulate(data_file, "attenuation_size", model_acoustic_attenuation=True,
+    #                 # model_detector_size=True, three_dimensional=True)
+    #                 model_detector_size=True)
+    # add_noise(path, noise_file)
 
     # Acoustic simulation + acoustic attenuation + detector size + frequency response
     path = simulate(data_file, "attenuation_size_frequencyresponse", model_acoustic_attenuation=True,
-                    model_detector_size=True, model_frequency_response=True)
-    add_noise(path, noise_file)
+                    model_detector_size=True, model_frequency_response=True, three_dimensional=True)
+                    # model_detector_size=True, model_frequency_response=True)
+    add_noise(path, noise_file, model_frequency_response=True)
 
     # Run optical forward model
-    optical_path = simulate(data_file, "optical_baseline", optical_model=True)
+    optical_path = simulate(data_file, "optical_baseline", optical_model=True, three_dimensional=True)
+    # optical_path = simulate(data_file, "optical_baseline", optical_model=True)
     add_noise(optical_path, noise_file)
     optical_path_simpa = optical_path.replace("_ipasc", "")
 
-    # Optical & acoustic simulation + acoustic attenuation
-    path = simulate(data_file, "optical_attenuation", optical_model=True, model_acoustic_attenuation=True,
-                    load_initial_pressure_path=optical_path_simpa)
-    add_noise(path, noise_file)
-
-    # Optical & acoustic simulation + detector size
-    path = simulate(data_file, "optical_size", optical_model=True, model_detector_size=True,
-                    load_initial_pressure_path=optical_path_simpa)
-    add_noise(path, noise_file)
+    # # Optical & acoustic simulation + acoustic attenuation
+    # path = simulate(data_file, "optical_attenuation", optical_model=True, model_acoustic_attenuation=True,
+    #                 # load_initial_pressure_path=optical_path_simpa, three_dimensional=True)
+    #                 load_initial_pressure_path=optical_path_simpa)
+    # add_noise(path, noise_file)
+    #
+    # # Optical & acoustic simulation + detector size
+    # path = simulate(data_file, "optical_size", optical_model=True, model_detector_size=True,
+    #                 # load_initial_pressure_path=optical_path_simpa, three_dimensional=True)
+    #                 load_initial_pressure_path=optical_path_simpa)
+    # add_noise(path, noise_file)
 
     # Optical & acoustic simulation + frequency response
     path = simulate(data_file, "optical_frequencyresponse", optical_model=True, model_frequency_response=True,
-                    load_initial_pressure_path=optical_path_simpa)
-    add_noise(path, noise_file)
+                    load_initial_pressure_path=optical_path_simpa, three_dimensional=True)
+                    # load_initial_pressure_path=optical_path_simpa)
+    add_noise(path, noise_file, model_frequency_response=True)
 
-    # Optical & acoustic simulation + acoustic attenuation + detector size
-    path = simulate(data_file, "optical_attenuation_size", optical_model=True, model_acoustic_attenuation=True,
-                    load_initial_pressure_path=optical_path_simpa, model_detector_size=True)
-    add_noise(path, noise_file)
+    # # Optical & acoustic simulation + acoustic attenuation + detector size
+    # path = simulate(data_file, "optical_attenuation_size", optical_model=True, model_acoustic_attenuation=True,
+    #                 # load_initial_pressure_path=optical_path_simpa, model_detector_size=True, three_dimensional=True)
+    #                 load_initial_pressure_path=optical_path_simpa, model_detector_size=True)
+    # add_noise(path, noise_file)
 
     # Optical & acoustic simulation + acoustic attenuation + detector size + frequency response
     path = simulate(data_file, "optical_attenuation_size_frequencyresponse", optical_model=True,
                     model_acoustic_attenuation=True, model_frequency_response=True,
-                    load_initial_pressure_path=optical_path_simpa, model_detector_size=True)
-    add_noise(path, noise_file)
+                    load_initial_pressure_path=optical_path_simpa, model_detector_size=True, three_dimensional=True)
+                    # load_initial_pressure_path=optical_path_simpa, model_detector_size=True)
+    add_noise(path, noise_file, model_frequency_response=True)
 
 
 if __name__ == "__main__":
