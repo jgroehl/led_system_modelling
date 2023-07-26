@@ -29,7 +29,7 @@ def generate_base_settings(path_manager: sp.PathManager,
     settings[Tags.DIM_VOLUME_X_MM] = 50
     settings[Tags.DIM_VOLUME_Y_MM] = 25
     settings[Tags.DIM_VOLUME_Z_MM] = 50
-    settings[Tags.SPACING_MM] = settings[Tags.DIM_VOLUME_X_MM] / 1024 * 4  # 1024 x 512 x 1024 grid is ideal for k-Wave
+    settings[Tags.SPACING_MM] = settings[Tags.DIM_VOLUME_X_MM] / 1024 * 2  # 1024 x 512 x 1024 grid is ideal for k-Wave
     settings[Tags.DATA_FIELD_SPEED_OF_SOUND] = speed_of_sound
     settings[Tags.WAVELENGTHS] = [wavelength]
     settings[Tags.RANDOM_SEED] = random_seed
@@ -64,7 +64,7 @@ def generate_base_settings(path_manager: sp.PathManager,
         Tags.DATA_FIELD_ALPHA_COEFF: 0.01,
         Tags.DATA_FIELD_DENSITY: 1000,
         Tags.SPACING_MM: settings[Tags.SPACING_MM],
-        Tags.SENSOR_SAMPLING_RATE_MHZ: 50
+        Tags.SENSOR_SAMPLING_RATE_MHZ: 40
     })
 
     settings["FieldOfViewCropping"] = Settings({
