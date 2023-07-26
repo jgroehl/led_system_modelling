@@ -11,23 +11,16 @@ STDDEV = 1
 INSPECT_PATH = "../../results/optical_attenuation_size_ipasc.hdf5"
 
 
-def normalize_sinogram(data_path, experimental=False, mean=MEAN, stddev=STDDEV):
+def normalize_sinogram(data, mean=MEAN, stddev=STDDEV):
     """
     Normalize a sinogram according to given mean and standard deviation.
 
-    :param str data_path: Path to the data file. This can either be a simulation result (stored as ``.hdf5``) or
-                          an experimental result (stored under the ``sinogram`` tag in a ``.mat`` file)
-    :param bool experimental: Whether the given data file is an experimental result
+    :param np.ndarray data: The data that we will normalize
     :param float mean: The target mean for the normalized sinogram
     :param float stddev: The target standard deviation for the normalized sinogram
 
     :return: The normalized data
     """
-
-    if experimental:
-        data = load_experimental_result(data_path)
-    else:
-        data = load_simulation_result(data_path)
 
     # Scale data to right standard deviation
     old_stddev = np.std(data)
@@ -41,7 +34,11 @@ def normalize_sinogram(data_path, experimental=False, mean=MEAN, stddev=STDDEV):
 
 
 if __name__ == "__main__":
-    normalized = normalize_sinogram(os.path.abspath(INSPECT_PATH))
+    path = os.path.abspath(INSPECT_PATH)
+    data = load_simulation_result(path)
+    # data = load_experimental_result(path)
+
+    normalized = normalize_sinogram(data)
 
     # Inspect result
     plt.figure()
