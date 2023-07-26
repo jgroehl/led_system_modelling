@@ -2,6 +2,8 @@ import numpy as np
 from skimage.metrics import structural_similarity
 
 EXPERIMENTAL_PATH = "/mnt/bmpi/Data/Mirre van der Wal/Data/2023-06-02 coregistered and normalized results/experimental.npy"
+from src.visualisation.show_frequencies import view_freqs
+
 
 NOISE = True
 
@@ -29,6 +31,9 @@ if __name__ == "__main__":
     noise_str = "_noise" if NOISE else ""
 
     experiment = np.load(EXPERIMENTAL_PATH)
+    # from scipy.io import loadmat
+    # data = loadmat(EXPERIMENTAL_PATH)
+    # experiment = data["P"]["sinrgm"][0][0][:, :, 4]
 
     save_dir = os.path.abspath(os.path.join(base_dir, path_manager.get_hdf5_file_save_path()))
 
@@ -39,7 +44,12 @@ if __name__ == "__main__":
             path = os.path.join(save_dir, full_filename)
             simulation = np.load(path)
 
+            # ssim = calculate_ssim(simulation, experiment)
+
+            simulation_freqs = view_freqs(simulation, "")
+            experiment_freqs = view_freqs(experiment, "")
+            ssim = calculate_ssim(simulation_freqs, experiment_freqs)
+
             title = ("Optical + " if optical else "") + "Acoustic: " + title
-            ssim = calculate_ssim(simulation, experiment)
 
             print(f"Structural similarity ({title}): ", ssim)

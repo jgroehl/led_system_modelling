@@ -1,6 +1,8 @@
 import numpy as np
 
 EXPERIMENTAL_PATH = "/mnt/bmpi/Data/Mirre van der Wal/Data/2023-06-02 coregistered and normalized results/experimental.npy"
+from src.visualisation.show_frequencies import view_freqs
+
 
 NOISE = True
 
@@ -38,7 +40,10 @@ if __name__ == "__main__":
             path = os.path.join(save_dir, full_filename)
             simulation = np.load(path)
 
+            simulation_freqs = view_freqs(simulation, "")
+            experiment_freqs = view_freqs(experiment, "")
+
             title = ("Optical + " if optical else "") + "Acoustic: " + title
-            mse = calculate_mse(simulation, experiment)
+            mse = calculate_mse(simulation_freqs, experiment_freqs)
 
             print(f"Mean squared error ({title}): ", mse)
