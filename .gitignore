@@ -1,3 +1,10 @@
+# Simulation results
+results/
+
+# Data (do include phantoms)
+resources/*
+!resources/phantoms/
+
 .idea/
 .idea/*
 

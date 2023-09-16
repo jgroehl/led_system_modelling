@@ -1,7 +1,9 @@
-from simpa import Settings, Tags
 import simpa as sp
-from simpa.utils.tissue_properties import TissueProperties
 import uuid
+import os.path
+
+from simpa import Settings, Tags
+from simpa.utils.tissue_properties import TissueProperties
 
 
 def generate_base_settings(path_manager: sp.PathManager,
@@ -22,12 +24,12 @@ def generate_base_settings(path_manager: sp.PathManager,
     """
 
     settings = Settings()
-    settings[Tags.SIMULATION_PATH] = path_manager.get_hdf5_file_save_path()
+    settings[Tags.SIMULATION_PATH] = os.path.abspath(os.path.join("../", path_manager.get_hdf5_file_save_path()))
     settings[Tags.VOLUME_NAME] = volume_name
     settings[Tags.DIM_VOLUME_X_MM] = 50
-    settings[Tags.DIM_VOLUME_Y_MM] = 30
+    settings[Tags.DIM_VOLUME_Y_MM] = 25
     settings[Tags.DIM_VOLUME_Z_MM] = 50
-    settings[Tags.SPACING_MM] = 0.0390625 * 4
+    settings[Tags.SPACING_MM] = settings[Tags.DIM_VOLUME_X_MM] / 1024 * 2  # 1024 x 512 x 1024 grid is ideal for k-Wave
     settings[Tags.DATA_FIELD_SPEED_OF_SOUND] = speed_of_sound
     settings[Tags.WAVELENGTHS] = [wavelength]
     settings[Tags.RANDOM_SEED] = random_seed
@@ -62,7 +64,7 @@ def generate_base_settings(path_manager: sp.PathManager,
         Tags.DATA_FIELD_ALPHA_COEFF: 0.01,
         Tags.DATA_FIELD_DENSITY: 1000,
         Tags.SPACING_MM: settings[Tags.SPACING_MM],
-        Tags.SENSOR_SAMPLING_RATE_MHZ: 50
+        Tags.SENSOR_SAMPLING_RATE_MHZ: 40
     })
 
     settings["FieldOfViewCropping"] = Settings({

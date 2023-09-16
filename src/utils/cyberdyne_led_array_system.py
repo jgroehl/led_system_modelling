@@ -61,17 +61,10 @@ class CyberdyneLEDArraySystem(PhotoacousticDevice):
                                            opening_angle=np.deg2rad(illum["numerical_apperature"] / 2)
                                            ))
 
-    def create_illumination_pattern(self) -> dict:
-        """
-        Adapted script from Maura Dantuma
-        """
+    def get_settings(self) -> dict:
         grid_size = 5.5e-2
-        TransFocus = 0
         Nx = 744
         dx = grid_size / Nx
-        full_angle = 80
-        n_src = 8 * 36
-        height_probe = 0
         height_phantom = 3.785e-2
 
         x_vec = np.linspace(-Nx / 2, Nx / 2, Nx) * dx
@@ -94,6 +87,17 @@ class CyberdyneLEDArraySystem(PhotoacousticDevice):
         setting["y_vec"] = y_vec
         setting["z_vec"] = z_vec
         setting["mask"] = mask
+
+        return setting
+
+    def create_illumination_pattern(self) -> dict:
+        """
+        Adapted script from Maura Dantuma
+        """
+        TransFocus = 0
+        full_angle = 80
+        n_src = 8 * 36
+        height_probe = 0
 
         bar_length = 50e-3
         dx_LEDs = 1.3511e-3
@@ -148,6 +152,38 @@ class CyberdyneLEDArraySystem(PhotoacousticDevice):
         src["type"] = 'cone'
 
         return src
+
+    def visualize(self):
+        import matplotlib.pyplot as plt
+
+        TransFocus = 0
+        height_probe = 0
+
+        src = self.create_illumination_pattern()
+        setting = self.get_settings()
+
+        plt.subplot(1, 1, 1, projection='3d')
+        plt.scatter(src["x_coordinates"], src["y_coordinates"], zs=src["z_coordinates"], marker="x", s=50,
+                    label='LED positions')
+
+        plt.plot(np.asarray([-50e-3 / 2, - 50e-3 / 2, 50e-3 / 2, 50e-3 / 2, - 50e-3 / 2]),
+                 np.asarray([height_probe - 5e-3, height_probe + 5e-3, height_probe + 5e-3, height_probe - 5e-3,
+                             height_probe - 5e-3]),
+                 zs=TransFocus * np.ones((5,)),
+                 c="r", linewidth=2, label='probe position')
+
+        plt.gca().quiver(src["x_coordinates"], src["y_coordinates"], src["z_coordinates"],
+                         src["direction"][:, 0], src["direction"][:, 1], src["direction"][:, 2],
+                         label="Illumination direction", color="pink", alpha=0.5)
+        plt.xlim([setting["x_vec"][0], setting["x_vec"][-1]])
+        plt.ylim([setting["y_vec"][0], setting["y_vec"][-1]])
+        # plt.gca().set_zlim([min(z_bar4), max(z_bar3)])
+        plt.xlabel('x [m]')
+        plt.ylabel('y [m]')
+        plt.gca().set_zlabel('z [m]')
+        plt.gca().view_init(elev=-161, azim=141)
+        plt.legend()
+        plt.show()
 
     def serialize(self) -> dict:
         serialized_device = self.__dict__
